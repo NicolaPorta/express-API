@@ -5,6 +5,7 @@ const cors = require('cors');
 const app = express();
 const port = 3001;
 
+// Default List
 let toDoList = [
     {
         id: 1,
@@ -34,10 +35,12 @@ app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
+// Show complete ToDo list
 app.get('/toDos', (req, res) => {
     res.json(toDoList);
 });
 
+// Add ToDo
 app.post('/toDos', (req, res) => {
     let toDo = req.body;
     console.log(toDoList[toDoList.length - 1]);
@@ -48,9 +51,10 @@ app.post('/toDos', (req, res) => {
     };
     toDoList.push(toDo);
 
-    res.send({toDoList,response: `ToDo is added with id: ${toDo.id}`}); //restituire elemento aggiunto
+    res.send({toDoList,response: `ToDo is added with id: ${toDo.id}`});
 });
 
+// Show single ToDo for id
 app.get('/toDos/:id', (req, res) => {
 
     const id = req.params.id
@@ -65,6 +69,7 @@ app.get('/toDos/:id', (req, res) => {
     res.status(404).send({toDoList, response:`ToDo with id: ${id} not found`});
 });
 
+// Edit single ToDo
 app.put('/toDos/:id', (req, res) => {
 
     const id = parseInt(req.params.id);
@@ -82,6 +87,7 @@ app.put('/toDos/:id', (req, res) => {
     res.send({toDoList, response:`ToDo with id: ${id} has been edited`});
 });
 
+// delete single ToDo
 app.delete('/toDos/:id', (req, res) => {
 
     const id = req.params.id;
