@@ -1,69 +1,89 @@
 const express = require('express');
-
 const cors = require('cors');
-
+const ToDo = require('./testDB');
 const app = express();
 const port = 3001;
 
+// Default List
 let toDoList = [];
+const dbCall = async () => {
+    await ToDo.find(function(err, res) {
+        res.map((toDo, i) => {
+            const newToDo = {
+                id: toDo._id,
+                text: toDo.text
+            };
+            toDoList[i] = newToDo;
+        });
+    });
+}
+dbCall();
+
 
 app.use(cors());
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-app.post('/toDos', (req, res) => {
-    const toDo = req.body;
-    toDoList.push(toDo);
-
-    res.send('ToDo is added to the database');
-});
-
-app.get('/toDos', (req, res) => {
+// Show complete ToDo list
+app.get('/toDos', async function(req, res) {
+    await dbCall();
     res.json(toDoList);
 });
 
-app.get('/toDos/:toDo', (req, res) => {
+// Add ToDo
+app.post('/toDos', async (req, res) => {
+    const text = req.body.toDo;
+    new ToDo({text}).save();
+    await dbCall();
+    res.send({toDoList,response: `ToDo is added (id: ${toDoList[toDoList.length - 1].id})`});
+});
 
-    const text = req.params.toDo.replace(/\s+/g, '-').toLowerCase();
+// Show single ToDo for id
+app.get('/toDos/:id', (req, res) => {
+
+    const id = req.params.id
+    console.log(id);
 
     for (let toDo of toDoList) {
-        let newToDo = toDo.toDo.replace(/\s+/g, '-').toLowerCase();
-        if (newToDo === text) {
+        if (toDo.id == id) {
             res.json(toDo);
             return;
         }
     }
 
-    res.status(404).send('ToDo not found');
-
+    res.status(404).send({toDoList, response:`ToDo with id: ${id} not found`});
 });
 
-app.put('/toDos/:toDo', (req, res) => {
+// Edit single ToDo
+app.put('/toDos/:id', (req, res) => {
 
-    const text = req.params.toDo;
-    const newToDo = req.body;
+    const id = parseInt(req.params.id);
+    const toDoEdited = {
+        id,
+        toDo: req.body.toDo
+    }
 
-    toDoList.forEach(toDo=> {
-        if (toDo.toDo === text) {
-            toDo = newToDo;
+    toDoList.forEach((toDo, i) => {
+        if (toDo.id == id) {
+            toDoList[i] = toDoEdited;
         }
     });
 
-    res.send('ToDo is edited');
+    res.send({toDoList, response:`ToDo with id: ${id} has been edited`});
 });
 
-app.delete('/toDos/:toDo', (req, res) => {
+// delete single ToDo
+app.delete('/toDos/:id', async (req, res) => {
 
-    const text = req.params.toDo;
-    console.log(text);
-
+    const id = req.params.id;
+    await ToDo.deleteOne({_id: id});
+    
     toDoList = toDoList.filter(toDo => {
-        let newToDo = toDo.toDo.replace(/\s+/g, '-').toLowerCase();
-        return (newToDo !== text);
+        return (id != toDo.id);
     });
 
-    res.send('ToDo is deleted');
+    res.send({toDoList, response:`ToDo with id: ${id} has been deleted`});
 });
 
 app.listen(port, () => console.log(`Hello world app listening on port ${port}!`));
