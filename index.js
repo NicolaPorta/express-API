@@ -3,6 +3,8 @@ const cors = require('cors');
 const ToDo = require('./testDB');
 const app = express();
 const port = 3001;
+require('dotenv').config();
+const Router = require('express').Router();
 
 // Default List
 let toDoList = [];
@@ -25,25 +27,25 @@ app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-// Show complete ToDo list
-app.get('/toDos', async function(req, res) {
-    await dbCall();
-    res.json(toDoList);
+Router.use(function(req, res, next){
+    next();
 });
 
-// Add ToDo
-app.post('/toDos', async (req, res) => {
+Router.get('/', function(req, res){
+    dbCall();
+    res.json(toDoList);
+});
+Router.post('/', async function(req, res){
     const text = req.body.toDo;
-    new ToDo({text}).save();
-    await dbCall();
+    await new ToDo({text}).save();
+
+    dbCall();
+
     res.send({toDoList,response: `ToDo is added (id: ${toDoList[toDoList.length - 1].id})`});
 });
 
-// Show single ToDo for id
-app.get('/toDos/:id', (req, res) => {
-
-    const id = req.params.id
-    console.log(id);
+Router.get('/:id', async function(req, res){
+    const id = req.params.id;
 
     for (let toDo of toDoList) {
         if (toDo.id == id) {
@@ -54,15 +56,16 @@ app.get('/toDos/:id', (req, res) => {
 
     res.status(404).send({toDoList, response:`ToDo with id: ${id} not found`});
 });
+Router.put('/:id', async function(req, res){
 
-// Edit single ToDo
-app.put('/toDos/:id', (req, res) => {
-
-    const id = parseInt(req.params.id);
+    const id = req.params.id;
     const toDoEdited = {
         id,
-        toDo: req.body.toDo
-    }
+        text: req.body.toDo
+    };
+    const toDo = await ToDo.findById({_id: id});
+    toDo.text = toDoEdited.text;
+    toDo.save();
 
     toDoList.forEach((toDo, i) => {
         if (toDo.id == id) {
@@ -72,9 +75,7 @@ app.put('/toDos/:id', (req, res) => {
 
     res.send({toDoList, response:`ToDo with id: ${id} has been edited`});
 });
-
-// delete single ToDo
-app.delete('/toDos/:id', async (req, res) => {
+Router.delete('/:id', async (req, res) => {
 
     const id = req.params.id;
     await ToDo.deleteOne({_id: id});
@@ -85,5 +86,7 @@ app.delete('/toDos/:id', async (req, res) => {
 
     res.send({toDoList, response:`ToDo with id: ${id} has been deleted`});
 });
+
+app.use('/toDos', Router);
 
 app.listen(port, () => console.log(`Hello world app listening on port ${port}!`));
