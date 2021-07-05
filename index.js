@@ -4,9 +4,9 @@ const ToDo = require('./testDB');
 const app = express();
 const port = 3001;
 require('dotenv').config();
-const Router = require('express').Router();
-const toDos = require('./controllers');
-
+// const Router = require('express').Router();
+// const toDos = require('./controllers');
+const Router = require('./routes')
 // Default List
 let toDoList = [];
 const dbCall = async () => {
@@ -28,26 +28,26 @@ app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-Router.use(function(req, res, next){
-    next();
-});
+// Router.use(function(req, res, next){
+//     next();
+// });
 
-Router.get('/', function(req, res){
-    toDos.getToDoList(res, dbCall, toDoList);
-});
-Router.post('/', async function(req, res){
-    toDos.addToDo(req, res, dbCall, toDoList);
-});
+// Router.get('/', function(req, res){
+//     toDos.getToDoList(res, dbCall, toDoList);
+// });
+// Router.post('/', async function(req, res){
+//     toDos.addToDo(req, res, dbCall, toDoList);
+// });
 
-Router.get('/:id', async function(req, res){
-    toDos.getToDoById(req, res, toDoList);
-});
-Router.put('/:id', async function(req, res){
-    toDos.editToDoById(req, res, toDoList)
-});
-Router.delete('/:id', async (req, res) => {
-    toDos.deleteToDoById(req, res, toDoList);
-});
+// Router.get('/:id', async function(req, res){
+//     toDos.getToDoById(req, res, toDoList);
+// });
+// Router.put('/:id', async function(req, res){
+//     toDos.editToDoById(req, res, toDoList)
+// });
+// Router.delete('/:id', async (req, res) => {
+//     toDos.deleteToDoById(req, res, toDoList);
+// });
 
 app.use('/toDos', Router);
 
