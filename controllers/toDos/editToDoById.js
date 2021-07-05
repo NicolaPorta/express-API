@@ -1,6 +1,6 @@
 const ToDo = require('../../testDB.js');
 
-async function editToDoById(res, list) {
+async function editToDoById(req, res, list) {
     const id = req.params.id;
     const toDoEdited = {
         id,

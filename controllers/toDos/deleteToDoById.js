@@ -1,6 +1,6 @@
 const ToDo = require('../../testDB');
 
-async function deleteToDoById(res, list) {
+async function deleteToDoById(req, res, list) {
     const id = req.params.id;
     await ToDo.deleteOne({_id: id});
     

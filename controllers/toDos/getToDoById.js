@@ -1,4 +1,4 @@
-async function getToDoById(res, list) {
+async function getToDoById(req, res, list) {
     const id = req.params.id;
 
     for (let toDo of list) {
