@@ -1,14 +1,9 @@
-async function getToDoById(req, res, list) {
+const ToDo = require("../../testDB");
+
+async function getToDoById(req, res) {
     const id = req.params.id;
-
-    for (let toDo of list) {
-        if (toDo.id == id) {
-            res.json(toDo);
-            return;
-        }
-    }
-
-    res.status(404).send({list, response:`ToDo with id: ${id} not found`});
+    const toDoById = await ToDo.findOne({_id: id});
+    res.json(toDoById);
 };
 
 module.exports = getToDoById;

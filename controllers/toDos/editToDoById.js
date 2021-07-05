@@ -1,6 +1,6 @@
 const ToDo = require('../../testDB.js');
 
-async function editToDoById(req, res, list) {
+async function editToDoById(req, res) {
     const id = req.params.id;
     const toDoEdited = {
         id,
@@ -10,13 +10,7 @@ async function editToDoById(req, res, list) {
     toDo.text = toDoEdited.text;
     toDo.save();
 
-    list.forEach((toDo, i) => {
-        if (toDo.id == id) {
-            list[i] = toDoEdited;
-        }
-    });
-
-    res.send({list, response:`ToDo with id: ${id} has been edited`});
+    res.send({ response:`ToDo with id: ${id} has been edited`});
 };
 
 module.exports = editToDoById;

@@ -1,25 +1,21 @@
-const {
-    toDos,
-    toDoList,
-    dbCall
-} = require('../../controllers');
+const toDos = require('../../controllers');
 const Router = require('express').Router();
 
 Router.get('/', function(req, res){
-    toDos.getToDoList(res, dbCall, toDoList);
+    toDos.getToDoList(res);
 });
 Router.post('/', async function(req, res){
-    toDos.addToDo(req, res, dbCall, toDoList);
+    toDos.addToDo(req, res);
 });
 
 Router.get('/:id', async function(req, res){
-    toDos.getToDoById(req, res, toDoList);
+    toDos.getToDoById(req, res);
 });
 Router.put('/:id', async function(req, res){
-    toDos.editToDoById(req, res, toDoList)
+    toDos.editToDoById(req, res)
 });
 Router.delete('/:id', async (req, res) => {
-    toDos.deleteToDoById(req, res, toDoList);
+    toDos.deleteToDoById(req, res);
 });
 
 module.exports = Router;
