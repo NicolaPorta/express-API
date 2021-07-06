@@ -1,9 +1,8 @@
-const ToDo = require("../../testDB");
+const ToDo = require("../../DB/testDB");
 
 async function getToDoById(req, res) {
     const id = req.params.id;
-    const toDoById = await ToDo.findOne({_id: id});
-    res.json(toDoById);
+    await ToDo.findOne({_id: id}).then(todo => res.json(todo));
 };
 
 module.exports = getToDoById;

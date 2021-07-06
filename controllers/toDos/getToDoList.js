@@ -1,15 +1,12 @@
-const ToDo = require("../../testDB");
+const ToDo = require("../../DB/testDB");
 
 async function getToDoList(res) {
     const toDoList = await ToDo.find();
-    let list = [];
-    toDoList.map((todo, i) => {
-        list[i] = {
-            id: todo._id,
-            text: todo.text
-        }
-    });
-    res.json(list)
+    const result = toDoList.map(({_id, text}) => ({
+      id: _id,
+      text
+    }));
+    res.json(result);
 };
 
 module.exports = getToDoList;
