@@ -1,14 +1,8 @@
 const ToDo = require("../../DB/testDB");
 
 async function getToDoList(res) {
-    await ToDo.find()
-    .then(toDoList => {
-        const result = toDoList.map(({_id, text}) => ({
-            id: _id,
-            text
-         }));
-        res.json(result);
-    });
+    await ToDo.findSetId()
+    .then(toDoList => res.json(toDoList));
 };
 
 module.exports = getToDoList;
