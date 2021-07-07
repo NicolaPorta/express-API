@@ -1,4 +1,4 @@
-const ToDo = require('./testDB');
+const ToDo = require('./initializeDB');
 
 new ToDo({text: 'Fare la spesa'}).save();
 new ToDo({text: 'Dare da mangiare ai cani'}).save();

@@ -1,4 +1,4 @@
-const ToDo = require("../../DB/testDB");
+const ToDo = require("../../DB/initializeDB");
 
 async function getToDoList(res) {
     await ToDo.findSetId()

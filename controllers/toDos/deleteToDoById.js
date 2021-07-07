@@ -1,9 +1,8 @@
-const ToDo = require('../../DB/testDB');
+const ToDo = require('../../DB/initializeDB');
 
 async function deleteToDoById(req, res) {
-    const id = req.params.id;
-    await ToDo.deleteOne({_id: id})
-    .then(({_id, text}) => res.send(`'${text}' with id: ${_id} has been deleted`));
+    await ToDo.findOneAndDelete({_id: req.params.id})
+    .then(todo => res.send({todo, response: `'${todo.text}' with id: ${todo._id} has been deleted`}));
 };
 
 module.exports = deleteToDoById;

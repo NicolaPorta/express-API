@@ -1,11 +1,7 @@
-const ToDo = require('../../DB/testDB');
+const ToDo = require('../../DB/initializeDB');
 
 async function addToDo(req, res) {
-
-    const text = req.body.toDo;
-    await new ToDo({text}).save().then(({_id, text})=> res.send({response: `'${text}' is added at id: ${_id}`}));
-
-    // res.send({response: `ToDo is added`});
+    await new ToDo({text: req.body.toDo}).save().then(todo => res.send({todo, response: `'${todo.text}' is added at id: ${todo._id}`}));
 };
 
 module.exports = addToDo;

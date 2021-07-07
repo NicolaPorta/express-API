@@ -1,13 +1,13 @@
-const ToDo = require('../../DB/testDB');
+const ToDo = require('../../DB/initializeDB');
 
 async function editToDoById(req, res) {
-    const id = req.params.id;
-    
-    const toDo = await ToDo.findById({_id: id});
-    toDo.text = req.body.toDo;
-    toDo.save()
-    .then(({_id, text}) => res.send(`'${text}' with id: ${_id} has been edited`));
-
+    await ToDo.findById({_id: req.params.id})
+    .then(toDo => {
+        toDo.text = req.body.toDo;
+        toDo.save();
+        return toDo;
+    })
+    .then(todo => res.send({response: `'${todo.text}' with id: ${todo._id} has been edited`,todo}));
 };
 
 module.exports = editToDoById;
