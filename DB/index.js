@@ -10,11 +10,10 @@ db.once('open', function() {
   console.log("we're connected to: " + url);
 });
 
-// Create a schema for Todos
-const toDoSchema = new mongoose.Schema({
-    text: String
-});
+const User = require('./users');
+const ToDo = require('./toDos');
 
-const ToDo = mongoose.model('ToDo', toDoSchema);
-
-module.exports = ToDo;
+module.exports = {
+  ToDo,
+  User
+};

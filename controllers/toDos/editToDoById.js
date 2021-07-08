@@ -1,4 +1,4 @@
-const ToDo = require('../../DB/initializeDB');
+const { ToDo } = require('../../DB');
 
 async function editToDoById(req, res) {
     await ToDo.findById({_id: req.params.id})

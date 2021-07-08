@@ -1,4 +1,4 @@
-const ToDo = require('../../DB/initializeDB');
+const {ToDo} = require('../../DB');
 
 async function deleteToDoById(req, res) {
     await ToDo.findOneAndDelete({_id: req.params.id})
