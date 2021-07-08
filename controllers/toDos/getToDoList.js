@@ -1,7 +1,7 @@
 const ToDo = require("../../DB/initializeDB");
 
 async function getToDoList(res) {
-    await ToDo.findSetId()
+    await ToDo.find()
     .then(toDoList => res.json(toDoList));
 };
 
