@@ -1,7 +1,7 @@
 const { User } = require("../../DB");
 
 async function getUsersList(res) {
-    await User.find()
+    return User.find()
     .then(users => res.json(users));
 };
 

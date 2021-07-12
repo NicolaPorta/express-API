@@ -1,7 +1,7 @@
 const { User } = require('../../DB');
 
 async function addUser(req, res) {
-    await new User({
+    return new User({
         name: req.body.name,
         surname: req.body.surname,
         email: req.body.email,

@@ -1,7 +1,7 @@
 const { User } = require('../../DB');
 
 async function editUserById(req, res) {
-    await User.findById({_id: req.params.id})
+    return User.findById({_id: req.params.id})
     .then(user => {
         user.name = req.body.name;
         user.surname = req.body.surname;

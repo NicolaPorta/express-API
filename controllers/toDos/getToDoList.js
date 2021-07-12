@@ -1,7 +1,7 @@
 const {ToDo} = require("../../DB");
 
 async function getToDoList(res) {
-    await ToDo.find()
+    return ToDo.find()
     .then(toDoList => res.json(toDoList));
 };
 

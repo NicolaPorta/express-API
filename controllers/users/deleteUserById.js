@@ -1,7 +1,7 @@
 const { User } = require('../../DB');
 
 async function deleteUserById(req, res) {
-    await User.findOneAndDelete({_id: req.params.id})
+    return User.findOneAndDelete({_id: req.params.id})
     .then(user => {
         try {
             res.send({user, response: `'${user.name} ${user.surname}' with id: ${user._id} has been deleted`});
