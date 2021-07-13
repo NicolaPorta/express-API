@@ -54,6 +54,8 @@ async function requestLogin(req, res) {
             success: true,
             message: "User logged in successfully",
             accessToken: token,
+            name: user.name,
+            surname: user.surname,
           });
 
     } catch(err) {
