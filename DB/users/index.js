@@ -10,7 +10,8 @@ const usersSchema = new mongoose.Schema({
         required: true
     },
     active: { type: Boolean, default: false },
-    password: { type: String, required: true }
+    password: { type: String, required: true },
+    accessToken: { type: String, default: null },
 });
 
 const User = mongoose.model('User', usersSchema);

@@ -1,9 +1,12 @@
 const { generateJWTToken } = require('../../utils/generateJWTToken');
+const comparePasswords = require('../../utils/comparePasswords');
 const { User } = require('../../DB');
 
 async function requestLogin(req, res) {
     try {
+        
         const {email, password} = req.body;
+        
         if(!email || !password) {
             return res.status(400).json({
                 error: true,
@@ -20,7 +23,6 @@ async function requestLogin(req, res) {
             });
         }
 
-
         if (!user.active) {
             return res.status(400).json({
               error: true,
@@ -28,7 +30,9 @@ async function requestLogin(req, res) {
             });
         }
 
-        if (user.password !== password) {
+        const isValid = await comparePasswords(password, user.password);
+
+        if (!isValid) {
             return res.status(400).json({
                 error: true,
                 message: "Invalid credentials",
@@ -42,6 +46,9 @@ async function requestLogin(req, res) {
                 message: "Couldn't create access token. Please try again later",
             });
         }
+        
+        user.accessToken = token;
+        await user.save();
 
         return res.send({
             success: true,

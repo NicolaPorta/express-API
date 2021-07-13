@@ -4,7 +4,7 @@ const addUser = require('./addUser');
 const deleteUserById = require('./deleteUserById');
 const getUserById = require('./getUserById');
 const editUserById = require('./editUserById');
-const requestLogin = require('./requestLogin')
+const requestLogin = require('./requestLogin');
 
 Router.get('/', getUsersList);
 Router.post('/', addUser);
