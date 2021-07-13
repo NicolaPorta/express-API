@@ -1,3 +1,4 @@
+// Connect database
 const mongoose = require('mongoose');
 const url = 'mongodb://localhost:27017/test';
 mongoose.connect(url, {useNewUrlParser: true, useUnifiedTopology: true});
@@ -9,10 +10,10 @@ db.once('open', function() {
   console.log("we're connected to: " + url);
 });
 
-const toDoSchema = new mongoose.Schema({
-    text: String
-})
+const User = require('./users');
+const ToDo = require('./toDos');
 
-const ToDo = mongoose.model('ToDo', toDoSchema);
-
-module.exports = ToDo;
+module.exports = {
+  ToDo,
+  User
+};

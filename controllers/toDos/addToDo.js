@@ -1,0 +1,7 @@
+const {ToDo} = require('../../DB');
+
+async function addToDo(req, res) {
+    return new ToDo({text: req.body.toDo}).save().then(todo => res.send({todo, response: `'${todo.text}' is added at id: ${todo._id}`}));
+};
+
+module.exports = addToDo;
