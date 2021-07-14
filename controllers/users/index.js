@@ -4,6 +4,7 @@ const getUserById = require('./getUserById');
 const editUserById = require('./editUserById');
 const deleteUserById = require('./deleteUserById');
 const requestLogin = require('./requestLogin');
+const validateToken = require('./validateToken');
 
 module.exports = {
     getUsersList,
@@ -11,5 +12,6 @@ module.exports = {
     getUserById,
     editUserById,
     deleteUserById,
-    requestLogin
+    requestLogin,
+    validateToken
 };

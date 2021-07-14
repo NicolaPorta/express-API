@@ -4,7 +4,6 @@ const { User } = require('../../DB');
 
 async function requestLogin(req, res) {
     try {
-        
         const {email, password} = req.body;
         
         if(!email || !password) {
