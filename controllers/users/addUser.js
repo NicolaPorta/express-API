@@ -1,5 +1,5 @@
 const { User } = require('../../DB');
-const hashPassword = require('../../utils/hashingPasswords');
+const { hashPassword } = require('../../utils/bycript');
 
 async function addUser(req, res) {
     const password = await hashPassword(req.body.password);
