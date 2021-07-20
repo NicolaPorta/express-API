@@ -1,16 +1,15 @@
 const { generateJWTToken } = require('../../utils/generateJWTToken');
-const comparePasswords = require('../../utils/comparePasswords');
+const { comparePasswords } = require('../../utils/bycript');
 const { User } = require('../../DB');
 
 async function requestLogin(req, res) {
     try {
-        
         const {email, password} = req.body;
         
         if(!email || !password) {
             return res.status(400).json({
                 error: true,
-                message: "Cannot authorize user.",
+                message: "Missing email or password",
             });
         }
 
@@ -26,7 +25,7 @@ async function requestLogin(req, res) {
         if (!user.active) {
             return res.status(400).json({
               error: true,
-              message: "You must verify your email to activate your account",
+              message: "Your account is not active",
             });
         }
 
@@ -54,6 +53,8 @@ async function requestLogin(req, res) {
             success: true,
             message: "User logged in successfully",
             accessToken: token,
+            name: user.name,
+            surname: user.surname,
           });
 
     } catch(err) {
