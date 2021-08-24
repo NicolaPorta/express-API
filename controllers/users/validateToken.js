@@ -3,7 +3,15 @@ require("dotenv").config();
 const { User } = require('../../DB');
 
 async function validateToken(req, res) {
-  const token = req.headers.authorization.split(" ")[1];
+  const separator = " ";
+  const authorization = req && req.headers && req.headers.authorization;
+  if(typeof authorization !== 'string' && authorization.indexof(separator) <= 0) {
+    return res.status(400).json({
+      error: 'ErrorRequest',
+      message: "Error in request token",
+    });
+  }
+  const token = req.headers.authorization.split(separator)[1];
   let result;
   if (!token)
     return res.status(401).json({

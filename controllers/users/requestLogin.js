@@ -5,11 +5,22 @@ const { User } = require('../../DB');
 async function requestLogin(req, res) {
     try {
         const {email, password} = req.body;
-        
-        if(!email || !password) {
+        if(!email && !password) {
             return res.status(400).json({
-                error: true,
-                message: "Missing email or password",
+                error: "ErrorMissingCredentials",
+                message: "Missing email and password",
+            });
+        }
+        if(!email) {
+            return res.status(400).json({
+                error: "ErrorMissingCredentials",
+                message: "Missing email",
+            });
+        }
+        if(!password) {
+            return res.status(400).json({
+                error: "ErrorMissingCredentials",
+                message: "Missing password",
             });
         }
 
@@ -17,14 +28,14 @@ async function requestLogin(req, res) {
 
         if (!user) {
             return res.status(404).json({
-              error: true,
+              error: "ErrorAccount",
               message: "Account not found",
             });
         }
 
         if (!user.active) {
             return res.status(400).json({
-              error: true,
+              error: "ErrorAccountActivation",
               message: "Your account is not active",
             });
         }
@@ -33,15 +44,15 @@ async function requestLogin(req, res) {
 
         if (!isValid) {
             return res.status(400).json({
-                error: true,
-                message: "Invalid credentials",
+                error: "ErrorPasswordValidation",
+                message: "Invalid password",
               });
         }
 
         const { error, token } = await generateJWTToken(user.email, user._id);
             if (error) {
             return res.status(500).json({
-                error: true,
+                error: "ErrorTokenGeneration",
                 message: "Couldn't create access token. Please try again later",
             });
         }
@@ -50,7 +61,6 @@ async function requestLogin(req, res) {
         await user.save();
 
         return res.send({
-            success: true,
             message: "User logged in successfully",
             accessToken: token,
             name: user.name,
@@ -59,7 +69,7 @@ async function requestLogin(req, res) {
 
     } catch(err) {
         return res.status(500).json({
-            error: true,
+            error: "ErrorLogin",
             message: "Couldn't login. Please try again later.",
         });
     }
